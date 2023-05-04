@@ -21,6 +21,7 @@ const initialState = {
 export function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [showPassword, setShowPassword] = useState(false);
 
   const keyBoardHide = () => {
     setIsShowKeyboard(false);
@@ -38,48 +39,66 @@ export function RegistrationScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={-180}
     >
-      <View style={{ ...styles.form }}>
-        <View>
-          <Text style={styles.formTitle}>Регистрация</Text>
-          <TextInput
-            placeholder="Логин"
-            style={styles.input}
-            onFocus={() => {
-              setIsShowKeyboard(true);
-            }}
-            value={state.login}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, login: value }))
-            }
-          />
+      <View style={styles.form}>
+        <Text style={styles.formTitle}>Регистрация</Text>
+        <View style={styles.container}>
+        <TextInput
+          placeholder="Логин"
+          style={[styles.input, isShowKeyboard && styles.inputFocused]}
+          onFocus={() => {
+            setIsShowKeyboard(true);
+          }}
+          onBlur={() => {
+            setIsShowKeyboard(false);
+          }}
+          value={state.login}
+          onChangeText={(value) =>
+            setState((prevState) => ({ ...prevState, login: value }))
+          }
+        />
         </View>
-        <View>
-          <TextInput
-            placeholder="Адрес электронной почты"
-            style={styles.input}
-            onFocus={() => {
-              setIsShowKeyboard(true);
-            }}
-            value={state.email}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, email: value }))
-            }
-          />
+        <View style={styles.container}>
+        <TextInput
+          placeholder="Адрес электронной почты"
+          style={[styles.input, isShowKeyboard && styles.inputFocused]}
+          onFocus={() => {
+            setIsShowKeyboard(true);
+          }}
+          onBlur={() => {
+            setIsShowKeyboard(false);
+          }}
+          value={state.email}
+          onChangeText={(value) =>
+            setState((prevState) => ({ ...prevState, email: value }))
+          }
+        />
         </View>
-        <View>
+        <View style={styles.container}>
           <TextInput
             placeholder="Пароль"
             style={styles.input}
-            secureTextEntry={true}
+            secureTextEntry={!showPassword}
             onFocus={() => {
               setIsShowKeyboard(true);
+            }}
+            onBlur={() => {
+              setIsShowKeyboard(false);
             }}
             value={state.password}
             onChangeText={(value) =>
               setState((prevState) => ({ ...prevState, password: value }))
             }
           />
+          <TouchableOpacity
+            style={styles.showPasswordButton}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            <Text style={styles.showPasswordText}>
+              {showPassword ? "Скрыть" : "Показать"}
+            </Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -88,7 +107,7 @@ export function RegistrationScreen() {
         >
           <Text style={styles.buttonText}>Зарегестрироваться</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={keyBoardHide}>
           <Text style={styles.linkText}>Уже есть аккаунт? Войти</Text>
         </TouchableOpacity>
       </View>
@@ -97,17 +116,40 @@ export function RegistrationScreen() {
 }
 
 const styles = StyleSheet.create({
-  input: {
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: "#E8E8E8",
-    backgroundColor: "#F6F6F6",
-    height: 50,
-    borderRadius: 8,
-    marginHorizontal: 16,
-    marginVertical: 10,
-    padding: 16,
-    fontFamily: "Roboto-Regular",
+      borderColor: "#E8E8E8",
+      backgroundColor: "#F6F6F6",
+      height: 50,
+      borderRadius: 8,
+      marginHorizontal: 16,
+      marginVertical: 10,
+      padding: 16,
+      fontFamily: "Roboto-Regular",
   },
+  input: {
+    flex: 1,
+  },
+  // input: {
+  //   borderWidth: 1,
+  //   borderColor: "#E8E8E8",
+  //   backgroundColor: "#F6F6F6",
+  //   height: 50,
+  //   borderRadius: 8,
+  //   marginHorizontal: 16,
+  //   marginVertical: 10,
+  //   padding: 16,
+  //   fontFamily: "Roboto-Regular",
+  //   // position: "relative",
+  // },
+  // inputFocused: {
+  //   borderWidth: 1,
+  //   backgroundColor: "#F6F6F6",
+  //   borderColor: "#E8E8E8",
+  //   color: "#212121",
+  // },
   form: {
     height: 549,
     width: 375,
@@ -141,6 +183,14 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "#fff",
+  },
+  showPasswordButton: {
+    marginLeft: 10,
+  },
+  showPasswordText: {
+    color: "#1B4371",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
   linkText: {
     fontFamily: "Roboto-Regular",
