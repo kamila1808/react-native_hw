@@ -90,6 +90,7 @@ export function RegistrationScreen() {
             onChangeText={(value) =>
               setState((prevState) => ({ ...prevState, password: value }))
             }
+
           />
           <TouchableOpacity
             style={styles.showPasswordButton}
@@ -144,12 +145,12 @@ const styles = StyleSheet.create({
   //   fontFamily: "Roboto-Regular",
   //   // position: "relative",
   // },
-  // inputFocused: {
-  //   borderWidth: 1,
-  //   backgroundColor: "#F6F6F6",
-  //   borderColor: "#E8E8E8",
-  //   color: "#212121",
-  // },
+  inputFocused: {
+    borderWidth: 1,
+    backgroundColor: "#F6F6F6",
+    borderColor: "#E8E8E8",
+    color: "#212121",
+  },
   form: {
     height: 549,
     width: 375,
