@@ -1,7 +1,9 @@
-import React from 'react'
+import {View, Text, StyleSheet} from 'react-native'
 
 export const ProfileScreen = () => {
   return (
-    <div>ProfileScreen</div>
+    <View>
+      <Text>Profile Screen</Text>
+    </View>
   )
 }

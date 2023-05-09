@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -24,6 +26,10 @@ export function RegistrationScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoginFocused, setIsLoginFocused] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
 
   const keyBoardHide = () => {
     setIsShowKeyboard(false);
@@ -32,7 +38,7 @@ export function RegistrationScreen({ navigation }) {
 
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../assets/fonts/Roboto/Roboto-Regular.ttf"),
-    "Roboto-Bold": require('../assets/fonts/Roboto/Roboto-Bold.ttf')
+    "Roboto-Bold": require("../assets/fonts/Roboto/Roboto-Bold.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -52,29 +58,50 @@ export function RegistrationScreen({ navigation }) {
           >
             <View style={styles.form}>
               <View style={styles.avatarContainer}>
-                <View></View>
+                <View style={styles.addIcon}>
+                  <Ionicons name="add" size={20} color="#FF6C00" />
+                </View>
               </View>
               <Text style={styles.formTitle}>Регистрация</Text>
-              <View style={styles.containerInput}>
+              <View
+                style={[
+                  styles.containerInput,
+                  isLoginFocused && styles.containerFocused,
+                ]}
+              >
                 <TextInput
                   placeholder="Логин"
                   style={styles.input}
                   onFocus={() => {
                     setIsShowKeyboard(true);
+                    setIsLoginFocused(true);
                   }}
-                  onBlur={() => setIsFocused(false)}
+                  onBlur={() => {
+                    setIsShowKeyboard(false);
+                    setIsLoginFocused(false);
+                  }}
                   value={state.login}
                   onChangeText={(value) =>
                     setState((prevState) => ({ ...prevState, login: value }))
                   }
                 />
               </View>
-              <View style={styles.containerInput}>
+              <View
+                style={[
+                  styles.containerInput,
+                  isEmailFocused && styles.containerFocused,
+                ]}
+              >
                 <TextInput
                   placeholder="Адрес электронной почты"
                   style={styles.input}
                   onFocus={() => {
                     setIsShowKeyboard(true);
+                    setIsEmailFocused(true);
+                  }}
+                  onBlur={() => {
+                    setIsShowKeyboard(false);
+                    setIsEmailFocused(false);
                   }}
                   value={state.email}
                   onChangeText={(value) =>
@@ -82,16 +109,23 @@ export function RegistrationScreen({ navigation }) {
                   }
                 />
               </View>
-              <View style={styles.containerInput}>
+              <View
+                style={[
+                  styles.containerInput,
+                  isPasswordFocused && styles.containerFocused,
+                ]}
+              >
                 <TextInput
                   placeholder="Пароль"
                   style={styles.input}
                   secureTextEntry={!showPassword}
                   onFocus={() => {
                     setIsShowKeyboard(true);
+                    setIsPasswordFocused(true);
                   }}
                   onBlur={() => {
                     setIsShowKeyboard(false);
+                    setIsPasswordFocused(false);
                   }}
                   value={state.password}
                   onChangeText={(value) =>
@@ -173,6 +207,11 @@ const styles = StyleSheet.create({
     padding: 16,
     fontFamily: "Roboto-Regular",
   },
+  containerFocused: {
+    borderColor: "#FF6C00",
+    backgroundColor: "#FFFFFF",
+    color: "#212121",
+  },
   input: {
     flex: 1,
   },
@@ -214,5 +253,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#1B4371",
     marginTop: 16,
+  },
+  addIcon: {
+    position: "absolute",
+    left: 110,
+    top: 90,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#FF6C00",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 25,
+    height: 25,
   },
 });
